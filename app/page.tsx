@@ -124,7 +124,7 @@ function UserMangaCard({ manga, index }: { manga: UserManga; index: number }) {
         <div className="mt-3">
           <h3 className="font-display text-sm font-bold text-white group-hover:text-primary transition-colors">{manga.title}</h3>
           <p className="mt-0.5 text-xs text-muted/50">by {manga.author}</p>
-          <p className="mt-0.5 text-[11px] text-muted/40">{manga.chapters} chapter{manga.chapters !== 1 ? 's' : ''}</p>
+          <p className="mt-0.5 text-[11px] text-muted/40">{manga.chapters.length} chapter{manga.chapters.length !== 1 ? 's' : ''}</p>
         </div>
       </a>
     </motion.div>

@@ -32,6 +32,10 @@ export default function MangaReaderPage() {
     setLoaded(true)
   }, [slug])
 
+  const chapterPages = (manga?.chapters ?? [])[selectedChapterIdx]?.pages ?? []
+  const pages = chapterPages
+  const hasPages = pages.length > 0
+
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (mode !== 'single' || !chapterPages.length) return
@@ -82,10 +86,6 @@ export default function MangaReaderPage() {
       </div>
     )
   }
-
-  const chapterPages = (manga?.chapters ?? [])[selectedChapterIdx]?.pages ?? []
-  const pages = chapterPages
-  const hasPages = pages.length > 0
 
   return (
     <div ref={containerRef} className="min-h-screen bg-[#0a0a0a] flex flex-col">

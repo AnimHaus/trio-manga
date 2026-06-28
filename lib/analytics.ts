@@ -91,7 +91,7 @@ export function getMangaAnalytics(manga: UserManga): MangaAnalytics {
   const ageDays = Math.max(0, (Date.now() - createdMs) / MS_DAY)
   const monthsActive = Math.max(1, ageDays / 30)
 
-  const chapterBoost = 1 + manga.chapters * 0.07
+  const chapterBoost = 1 + manga.chapters.length * 0.07
   const baseDaily = 60 + Math.floor(rand() * 380) // base daily views
   const growth = 0.4 + rand() * 1.1 // total growth across the window
   const rpm = 110 + Math.floor(rand() * 240) // ₹ per 1,000 reads
