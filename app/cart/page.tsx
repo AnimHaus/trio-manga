@@ -10,7 +10,6 @@ import { faTrash, faMinus, faPlus, faArrowLeft, faLock, faCrown, faBoxOpen } fro
 
 const DASHBOARD_URL = process.env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001'
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
-const TOKEN_KEY = 'trio_access_token'
 
 function fmt(paise: number) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(paise / 100)
@@ -21,14 +20,14 @@ export default function CartPage() {
   const { user } = useAuth()
 
   async function handleCheckout() {
-    const token = localStorage.getItem(TOKEN_KEY)
-    if (!token) {
+    if (!user) {
       window.location.href = `${DASHBOARD_URL}/login?redirect=cart`
       return
     }
     const res = await fetch(`${API_URL}/api/orders/create`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ items: items.map((i) => ({ id: i.id, type: i.type, quantity: i.quantity, price: i.price })) }),
     })
     if (!res.ok) return
@@ -49,7 +48,8 @@ export default function CartPage() {
         handler: async (response: any) => {
           await fetch(`${API_URL}/api/orders/verify`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}` },
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(response),
           })
           clearCart()

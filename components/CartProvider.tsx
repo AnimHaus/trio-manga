@@ -34,12 +34,6 @@ export function useCart() {
   return ctx
 }
 
-function getToken(): string | null {
-  if (typeof document === 'undefined') return null
-  const m = document.cookie.match(/(?:^|; )trio_access_token=([^;]*)/)
-  return m ? decodeURIComponent(m[1]) : null
-}
-
 const LOCAL_CART_KEY = 'trio_guest_cart'
 
 function loadLocalCart(): CartItem[] {
@@ -63,11 +57,10 @@ function clearLocalCart(): void {
 }
 
 async function syncToBackend(items: CartItem[]): Promise<void> {
-  const token = getToken()
-  if (!token) return
   await fetch(`${API_URL}/api/cart`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(items),
   }).catch(() => {/* best-effort */})
 }
@@ -82,12 +75,8 @@ export default function CartProvider({ children }: { children: ReactNode }) {
 
     if (user && user !== prevUser.current) {
       // Just logged in — fetch backend cart and merge with any guest items
-      const token = getToken()
       const guestItems = loadLocalCart()
-      if (token) {
-        fetch(`${API_URL}/api/cart`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+      fetch(`${API_URL}/api/cart`, { credentials: 'include' })
           .then((r) => (r.ok ? r.json() : null))
           .then((data: CartItem[] | null) => {
             const backendItems: CartItem[] = Array.isArray(data) ? data : []
@@ -107,7 +96,6 @@ export default function CartProvider({ children }: { children: ReactNode }) {
             }
           })
           .catch(() => { setItems(guestItems) })
-      }
     } else if (!user && prevUser.current) {
       // Logged out — move current cart to localStorage as guest cart
       setItems((current) => {
