@@ -33,7 +33,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm text-muted/70">
               <li><a href={`${process.env.NEXT_PUBLIC_DASHBOARD_URL ?? 'http://localhost:3001'}/dashboard`} className="hover:text-primary transition-colors">Dashboard</a></li>
               <li><a href="https://trioanimee.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Trio Anime</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Careers</a></li>
+              <li><TransitionLink href="/careers" className="hover:text-primary transition-colors">Careers</TransitionLink></li>
             </ul>
           </div>
 
