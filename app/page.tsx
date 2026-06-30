@@ -144,16 +144,18 @@ export default function MangaPage() {
   return (
     <div className="min-h-screen bg-bg">
       {/* ── Featured Hero ─────────────────────────────────── */}
-      <section className="relative flex min-h-[70vh] items-end pb-10 sm:pb-14 md:pb-20">
+      <section className="relative flex min-h-[50vh] items-end pb-10 sm:pb-14 md:pb-20">
         <div className="absolute inset-0">
-          <Image
-            src={featured.image}
-            alt=""
-            fill
-            className="object-cover opacity-40"
-            priority
+          <video
+            // src={featured.image}
+            src="/background.mp4"
+            autoPlay
+            loop
+            muted
+            className="w-full h-full object-cover opacity-40"
+            style={{ maxHeight: '50vh' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
